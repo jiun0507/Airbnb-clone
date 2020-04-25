@@ -22,4 +22,19 @@ class PhotoAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     """RoomAdmin Definition"""
 
-    pass
+    list_display = (
+        "name",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",
+        "room_types",
+    )
+    list_filter = ("city", "instant_book", "country")
