@@ -22,6 +22,25 @@ class PhotoAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     """RoomAdmin Definition"""
 
+    fieldsets = (
+        (
+            "Basic Info",
+            {"fields": ("name", "description", "country", "address", "price")},
+        ),
+        ("Times", {"fields": ("check_in", "check_out")},),
+        ("Spaces", {"fields": ("guests", "beds", "bedrooms",)},),
+        (
+            "More about the Spaces",
+            {
+                "classes": ("collapse",),
+                "fields": ("amenities", "facilities", "house_rules"),
+            },
+        ),
+        ("Last Details", {"fields": ("host",)},),
+    )
+
+    ordering = ("name", "price", "bedrooms")
+
     list_display = (
         "name",
         "country",
@@ -36,5 +55,25 @@ class RoomAdmin(admin.ModelAdmin):
         "check_out",
         "instant_book",
         "room_types",
+        "count_amenities",
     )
-    list_filter = ("city", "instant_book", "country")
+
+    list_filter = (
+        "host__superhost",
+        "host__gender",
+        "city",
+        "instant_book",
+        "facilities",
+        "room_types",
+        "amenities",
+        "country",
+    )
+    search_fields = ("^host__username",)
+    # Many to Many relations
+    filter_horizontal = ("house_rules", "amenities", "facilities")
+
+    def count_amenities(self, obj):
+        # print(obj.amenities.all())
+        return obj.amenities.count()
+
+    count_amenities.short_description = "hello sexy!"
