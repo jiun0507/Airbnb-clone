@@ -1,3 +1,6 @@
-#Airbnb Clone
+#Something like Airbnb.
 
-Cloning Airbnb with Python, Django, Tailwind and more.....!
+-Python Django
+-AWS
+
+->toilets instead of rooms
