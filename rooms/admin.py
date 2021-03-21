@@ -27,8 +27,20 @@ class RoomAdmin(admin.ModelAdmin):
             "Basic Info",
             {"fields": ("name", "description", "country", "address", "price")},
         ),
-        ("Times", {"fields": ("check_in", "check_out")},),
-        ("Spaces", {"fields": ("guests", "beds", "bedrooms",)},),
+        (
+            "Times",
+            {"fields": ("check_in", "check_out")},
+        ),
+        (
+            "Spaces",
+            {
+                "fields": (
+                    "guests",
+                    "beds",
+                    "bedrooms",
+                )
+            },
+        ),
         (
             "More about the Spaces",
             {
@@ -36,7 +48,10 @@ class RoomAdmin(admin.ModelAdmin):
                 "fields": ("amenities", "facilities", "house_rules"),
             },
         ),
-        ("Last Details", {"fields": ("host",)},),
+        (
+            "Last Details",
+            {"fields": ("host",)},
+        ),
     )
 
     ordering = ("name", "price", "bedrooms")
@@ -56,6 +71,7 @@ class RoomAdmin(admin.ModelAdmin):
         "instant_book",
         "room_types",
         "count_amenities",
+        "total_rating",
     )
 
     list_filter = (
@@ -76,4 +92,5 @@ class RoomAdmin(admin.ModelAdmin):
         # print(obj.amenities.all())
         return obj.amenities.count()
 
-    count_amenities.short_description = "hello sexy!"
+    "the list display column name"
+    count_amenities.short_description = "number of amenities"
