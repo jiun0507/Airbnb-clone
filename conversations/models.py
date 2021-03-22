@@ -5,20 +5,36 @@ from core import models as core_models
 class Conversation(core_models.TimeStampedModel):
     """Conversation Model Definition"""
 
-    participnats = models.ManyToManyField("users.User", blank=True)
+    participants = models.ManyToManyField("users.User", blank=True)
 
     def __str__(self):
-        return str(self.created)
+        usernames = []
+        for user in self.participants.all():
+            usernames.append(user.username)
+
+        return ", ".join(usernames)
+
+    def count_messages(self):
+        return self.messages.count()
+
+    count_messages.short_description = "Number of messages"
+
+    def count_participants(self):
+        return self.participants.count()
+
+    count_participants.short_description = "Number of participants"
 
 
 class Message(core_models.TimeStampedModel):
     """Message Model Definition"""
 
     text = models.TextField()
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "users.User", related_name="messages", on_delete=models.CASCADE
+    )
     conversation = models.ForeignKey(
-        "conversations.Conversation", on_delete=models.CASCADE
+        "conversations.Conversation", related_name="messages", on_delete=models.CASCADE
     )
 
     def __str__(self):
-        f"{self.user} says: {self.text}"
+        return f"{self.user} says: {self.text}"
