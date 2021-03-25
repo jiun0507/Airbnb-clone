@@ -24,14 +24,20 @@ class PhotoAdmin(admin.ModelAdmin):
     get_thumbnail.short_description = "thumbnail"
 
 
+# inline admin class-> allows this inline admin to be inside another class.
+class PhotoInline(admin.TabularInline):
+    model = models.Photo
+
+
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
     """RoomAdmin Definition"""
 
+    inlines = (PhotoInline,)
     fieldsets = (
         (
             "Basic Info",
-            {"fields": ("name", "description", "country", "address", "price")},
+            {"fields": ("name", "description", "city", "country", "address", "price")},
         ),
         (
             "Times",
@@ -90,6 +96,9 @@ class RoomAdmin(admin.ModelAdmin):
         "amenities",
         "country",
     )
+
+    raw_id_fields = ("host",)
+
     search_fields = ("^host__username",)
     # Many to Many relations
     filter_horizontal = ("house_rules", "amenities", "facilities")
